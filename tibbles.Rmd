@@ -1,0 +1,95 @@
+---
+title: "The Trouble with Tibbles"
+author: "Theo Roe"
+date: "2 October 2017"
+output: html_document
+---
+<style>
+    body .main-container {
+        max-width: 600px;
+    }
+    .column-left{
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+.column-center{
+  display: inline-block;
+  width: 33%;
+  text-align: center;
+}
+.column-right{
+  float: right;
+  width: 50%;
+  text-align: left;
+}
+
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+
+</style>
+```{r setup,include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Let's get something straight, there isn't really any trouble with tibbles. I'm hoping you've noticed this is a play on 1967 Star Trek episode, "The Trouble with Tribbles". I've recently got myself a job as a Data Scientist, here, at [Jumping Rivers](https://www.jumpingrivers.com/). Having never come across tibbles until this point, I now find myself using them in nearly every R script I compose. Be that your timeless standard R script, your friendly Shiny app or an analytical Markdown document. 
+
+### _What are tibbles?_
+
+Presumably this is why you came here, right?
+
+Tibbles ARE data frames. *Shocked emoji*. Yep, they are frames of data. There's a quote I found somewhere on the internet that decribes tibbles quite well;  
+
+ _"keeping what time has proven to be effective, and throwing out what is not"_.   
+
+Basically, some clever guys/gals took the classic `data.frame` , shook it til the bad parts fell out, then added some clever new features. 
+
+### _That word for needing something before hand_
+
+```{r eval = FALSE}
+#Tibbles are a part of the tidyverse package, so the easiest way to get access is to install the whole `tidyverse` package
+install.packages("tidyverse")
+
+#alternatively, install only tibble
+install.packages("tibble")
+```
+```{r eval = FALSE}
+library("tidyverse")
+library("tibble")
+```
+```{r include = FALSE}
+library("tidyverse")
+library("tibble")
+```
+
+### _Tribblemaking_
+
+There are 3 ways to make a tibble. It pretty much acts as your friendly old pal `data.frame` does.  
+
+1) Creation. Just as `data.frame` created data frames,`tibble`, `data_frame` and `tribble` all create tibbles. 
+
+<div class="col2">
+```{r}
+data.frame(a = 1:5, 
+           b = letters[1:5])  
+```
+
+```{r}
+data_frame(a = 1:5, 
+           b = letters[1:5])
+```
+
+```{r}
+tibble(a = 1:5, 
+           b = letters[1:5])
+```
+
+<div>
