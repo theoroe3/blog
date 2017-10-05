@@ -6,8 +6,8 @@ output: html_document
 ---
 <style>
     body .main-container {
-        max-width: 600px;
-    }
+        max-width: 650px;
+    } 
     .column-left{
   float: left;
   width: 50%;
@@ -23,7 +23,6 @@ output: html_document
   width: 50%;
   text-align: left;
 }
-
   .col2 {
     columns: 2 200px;         /* number of columns and width in pixels*/
     -webkit-columns: 2 200px; /* chrome, safari */
@@ -34,7 +33,14 @@ output: html_document
     -webkit-columns: 3 100px;
     -moz-columns: 3 100px;
   }
-
+  .pull-left {
+  float: left;
+  width: 20%;
+}
+.pull-right {
+  float: right;
+  width: 20%;
+}
 </style>
 ```{r setup,include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -42,7 +48,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Let's get something straight, there isn't really any trouble with tibbles. I'm hoping you've noticed this is a play on 1967 Star Trek episode, "The Trouble with Tribbles". I've recently got myself a job as a Data Scientist, here, at [Jumping Rivers](https://www.jumpingrivers.com/). Having never come across tibbles until this point, I now find myself using them in nearly every R script I compose. Be that your timeless standard R script, your friendly Shiny app or an analytical Markdown document. 
 
-### _What are tibbles?_
+### _What are tibbles?_ 
 
 Presumably this is why you came here, right?
 
@@ -52,7 +58,7 @@ Tibbles ARE data frames. *Shocked emoji*. Yep, they are frames of data. There's 
 
 Basically, some clever guys/gals took the classic `data.frame` , shook it til the bad parts fell out, then added some clever new features. 
 
-### _That word for needing something before hand_
+### _Precursors_
 
 ```{r eval = FALSE}
 #Tibbles are a part of the tidyverse package, so the easiest way to get access is to install the whole `tidyverse` package
@@ -72,24 +78,101 @@ library("tibble")
 
 ### _Tribblemaking_
 
-There are 3 ways to make a tibble. It pretty much acts as your friendly old pal `data.frame` does.  
+There are 3 ways to make a tibble. It pretty much acts as your friendly old pal `data.frame` does. Just like standard data frames, we can create tibbles, coerce objects into tibbles and import data sets into `R` as a tibble. Below is a table of the traditional data frame commands and their respective tibbles commands.
+    
+_Formation Type_| _Data Frame Commands_          | *Tibbles Commands*
+--------------- | -------------------------------| ---------------------------------------------
+_Creation_      | `data.frame`                   | `data_frame` `tibble` `tribble`
+_Coercion_      | `as.data.frame`                | `as_data_frame` `as_tribble` 
+_Importing_     | `read.` family                 | `read_delim` `read_csv` `read_csv2` `read_tsv`
 
-1) Creation. Just as `data.frame` created data frames,`tibble`, `data_frame` and `tribble` all create tibbles. 
+Examples of the new commands are avaiable when you [click here.](examples.html)
 
-<div class="col2">
+### _Tibbles vs Data Frames_
+
+All talk, no walk so far right? "Where are the tibbles?" I hear you cry. Well, here we go:
+
 ```{r}
-data.frame(a = 1:5, 
-           b = letters[1:5])  
+tibble(a = 1:26, b = letters)
 ```
 
+The first thing you should notice is the pretty print process. The class of each column is now displayed above it and the dimensions of the tibble are shown at the top. Tibbles have a print option which defaults to if there are more than 20 rows, only print the first 10 along side only showing columns that will fit on the screen. The row settings can be changed via 
 ```{r}
-data_frame(a = 1:5, 
-           b = letters[1:5])
+ options(tibble.print_max = 3, tibble.print_min = 1)
 ```
-
+So now if there is more than 3 rows, we print only 1 row. Tibbles of length 3 and 4 would now print as so.
+ 
+ <!--  default is 20, 10-->
+<div class = "col2">
 ```{r}
-tibble(a = 1:5, 
-           b = letters[1:5])
+tibble(1:3)
 ```
+```{r}
+tibble(1:4)
+```
+</div>
 
-<div>
+Yes, OK, you could do this with the traditional data frame. But it would be a lot more work, right?
+As well as that, tibbles don't drop the variable type, don't partial match and they allow non-syntactic column names when importing data in. Let's say we have some data in a [csv file](x.csv). It has 3 non-syntactic column names and one column of characters. Reading this is as a tibble and a data frame we get 
+
+.pull-left[
+```{r, include=FALSE}
+tib = read_csv("x.csv")
+options(tibble.print_max = 10, tibble.print_min = 5)
+```
+```{r, eval = FALSE}
+tib = read_csv("x.csv")
+```
+```{r}
+tib
+```
+]  
+.pull-right[
+```{r}
+df = read.csv("x.csv")
+```
+```{r}
+df
+```
+]
+
+We see already that in the `read.csv` process we've lost the column names. Let's try some partial matching...
+<div class = "col2">
+```{r}
+tib$n
+```
+```{r}
+df$n
+```
+</div>
+
+With the tibble we get an error, yet with the data frame it leads us straight to our `name` variable. To read more about why partial matching is bad, check out [this thread](http://r.789695.n4.nabble.com/Deprecating-partial-matching-in-data-frame-td4661898.html).
+
+What about subsetting? Using single square brackets, `[`, will always return another tibble whilst the double square brackets, `[[`, and the tradition dollar, `$` are quicker ways to access individual columns as vectors. These are actually quicker than the ways of subsetting `data.frame`'s, as shown in the [documentation for the tibble package](https://cran.r-project.org/web/packages/tibble/tibble.pdf).  
+
+Let's try it out..
+<div class = "col2">
+```{r}
+tib[,1]
+tib[[1]]
+tib$name
+```
+</div>
+
+<div class = "col2">
+```{r}
+df[,1]
+df[[1]]
+df$name
+```
+</div>
+  
+At last, no more strings as factors! Upon reading the data in, tibbles recognise _strings as strings_,  not factors. For example, with the name column in our data set. 
+<div class = "col2">
+```{r}
+class(df$name)
+class(tib$name)
+```
+</div>
+
+

@@ -1,0 +1,89 @@
+---
+title: "Blog Examples"
+author: "Theo Roe"
+date: "4 October 2017"
+output: html_document
+---
+<style>
+    body .main-container {
+        max-width: 600px;
+    }
+    .column-left{
+  float: left;
+  width: 50%;
+  text-align: left;
+}
+.column-center{
+  display: inline-block;
+  width: 33%;
+  text-align: center;
+}
+.column-right{
+  float: right;
+  width: 50%;
+  text-align: left;
+}
+
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+  .col3 {
+    columns: 3 100px;
+    -webkit-columns: 3 100px;
+    -moz-columns: 3 100px;
+  }
+
+</style>
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+library(tidyverse)
+```
+
+
+
+1) __*Creation.*__ Just as `data.frame` creates data frames,`tibble`, `data_frame` and `tribble` all create tibbles. 
+
+<div class="col2">
+Standard data frame
+```{r}
+data.frame(a = 1:5, 
+           b = letters[1:5])  
+```
+tibble using `data_frame`
+```{r}
+data_frame(a = 1:5, 
+           b = letters[1:5])
+```
+tibble using `tibble`
+```{r}
+tibble(a = 1:5, 
+           b = letters[1:5])
+```
+tibble using `tribble`
+```{r}
+tribble( ~a, ~b, 
+       #---|----
+          1, "a", 
+          2, "b")
+```
+</div>
+
+2) __*Coercion.*__ Just as `as.data.frame` coerces objects into data frames, `as_data_frame` and `as_tibble` coerce objects into tibbles. 
+```{r}
+df = data.frame(a = 1:5, b = letters[1:5])
+```
+<div class="col2">
+```{r}
+as_data_frame(df)
+as_tibble(df)
+```
+</div>
+
+3) __*Importing.*__ Just as `read.csv`
+
+[click here](tibbles.html)
