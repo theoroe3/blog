@@ -1,9 +1,12 @@
 ---
-title: "Blog Examples"
+title: "How to Form a Tibble"
 author: "Theo Roe"
-date: "4 October 2017"
+date: "2 October 2017"
 output: html_document
 ---
+
+[<- Back to the main page](tibbles.html)
+
 <style>
     body .main-container {
         max-width: 600px;
@@ -44,27 +47,27 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-
+Here are those examples you were looking for. 
 
 1) __*Creation.*__ Just as `data.frame` creates data frames,`tibble`, `data_frame` and `tribble` all create tibbles. 
 
 <div class="col2">
-Standard data frame
+Standard data frame.
 ```{r}
 data.frame(a = 1:5, 
            b = letters[1:5])  
 ```
-tibble using `data_frame`
+A tibble using `data_frame`.
 ```{r}
 data_frame(a = 1:5, 
            b = letters[1:5])
 ```
-tibble using `tibble`
+A tibble using `tibble`.
 ```{r}
 tibble(a = 1:5, 
            b = letters[1:5])
 ```
-tibble using `tribble`
+A tibble using `tribble`.
 ```{r}
 tribble( ~a, ~b, 
        #---|----
@@ -72,8 +75,9 @@ tribble( ~a, ~b,
           2, "b")
 ```
 </div>
+Notice the odd one out? Tribbles are different. They're a way of laying out small amounts of data in an easy to read form. I'm not too keen on these, as even writing out that simple 2 x 2 tribble got tedious. 
 
-2) __*Coercion.*__ Just as `as.data.frame` coerces objects into data frames, `as_data_frame` and `as_tibble` coerce objects into tibbles. 
+2) __*Coercion.*__ Just as `as.data.frame` coerces objects into data frames, `as_data_frame` and `as_tibble` coerces objects into tibbles. 
 ```{r}
 df = data.frame(a = 1:5, b = letters[1:5])
 ```
@@ -84,6 +88,29 @@ as_tibble(df)
 ```
 </div>
 
-3) __*Importing.*__ Just as `read.csv`
+You can coerce more than just data frames, too. These take lists, matrices, vectors and single instances of class. 
 
-[click here](tibbles.html)
+3) __*Importing.*__ There's a few options to read in data files within the `tidyverse`, so we'll just compare `read_csv` and its representative `data.frame` pal, `read.csv`. Let's take a look at them. 
+I'm going to use the same csv file as in the main page.
+```{r, include=FALSE}
+tib = read_csv("x.csv")
+options(tibble.print_max = 10, tibble.print_min = 5)
+```
+<div class = "col2">
+```{r, eval = FALSE}
+tib = read_csv("x.csv")
+```
+```{r}
+tib
+```
+
+***
+
+```{r}
+df = read.csv("x.csv")
+```
+```{r}
+df
+```
+</div>
+Not only does `read_csv` return the pretty tibble, it is also much faster. For proof, check out [this article](http://yetanothermathprogrammingconsultant.blogspot.co.uk/2016/12/reading-csv-files-in-r-readcsv-vs.html) by Erwin Kalvelagen. 
